@@ -15,8 +15,11 @@ Each field will be a string of size 20 (characters).
 
 
 Your program should prompt the user for the name of the text file. 
-Your program will successively read each line of the text file and create a struct which contains the first and last names found in the file. Each struct created
- will be added to a slice, and after all lines have been read from the file, your program will have a slice containing one struct for each line in the file. After reading all lines from the file, your program should iterate through your slice of structs and
+Your program will successively read each line of the text file and create a struct which contains 
+the first and last names found in the file. Each struct created
+ will be added to a slice, and after all lines have been read from the file, 
+ your program will have a slice containing one struct for each line in the file. 
+ After reading all lines from the file, your program should iterate through your slice of structs and
  print the first and last names found in each struct.
  */
  package main
@@ -24,14 +27,32 @@ Your program will successively read each line of the text file and create a stru
  import (
 	"fmt"
 	"io/ioutil"
+	"strings"
  )
+
+ type nameStruct struct{
+	 fname string
+	 lname string
+ }
 
 func main(){
 	var filename string
 	fmt.Println("Enter name of file")
 	fmt.Scan(&filename)
 	data,_ := ioutil.ReadFile(filename)
-	//fmt.Println(string(data))
-	fmt.Println("Contents of file\n",string(data))
+	//Split into lines
+	lines := strings.Split(string(data),"\n")	
+	nameSlice := make([]nameStruct, 0, len(lines))
+	for _,line := range lines{
+		names := strings.Split(line, " ")
+		nameInst := nameStruct{fname: names[0], lname: names[1]}
+		nameSlice = append(nameSlice, nameInst)
+		//nameSlice.append(nameStruct{fname: names[0], lname: names[1]})
+	}
+	fmt.Printf("Read %d names into Slice of Structs\n",len(nameSlice))
+	for _,name := range nameSlice{
+		fmt.Printf("FirstName: %s  LastName: %s\n",name.fname, name.lname)
+	}
+
 	
 }
