@@ -18,16 +18,15 @@ Your program should create a map and add the name and address to the map using t
 
  func main(){
 	addressMap := make(map[string]string)
-	reader := bufio.NewScanner(os.Stdin)
-
 	fmt.Println("Enter a name")
-	reader.Scan()
-	addressMap["name"] = strings.TrimSpace(reader.Text())
-
+	reader := bufio.NewReader(os.Stdin)
+	addressMap["name"],_ = strings.TrimSpace(reader.ReadString('\n'))
 	fmt.Println("Enter address")
-	reader.Scan()
-	addressMap["address"] = strings.TrimSpace(reader.Text())
-	
+	addressMap["address"],_ = strings.TrimSpace(reader.ReadString('\n'))
+	/*data := map[string]string{
+		"name":strings.TrimSpace(name),
+		"address":strings.TrimSpace(address),
+	}*/
 	jsonStr,_ := json.Marshal(addressMap)
 	fmt.Printf("Json = %v", string(jsonStr))
  }
