@@ -2,7 +2,6 @@
 Read.go
 Uses ReadFile from ioutil.. Not good for big files sine it reads it all to memory
 
-
 Write a program which reads information from a file and represents it in a slice of structs. 
 Assume that there is a text file which contains a series of names. 
 Each line of the text file has a first name and a last name, in that order, separated by a 
@@ -39,7 +38,11 @@ func main(){
 	var filename string
 	fmt.Println("Enter name of file")
 	fmt.Scan(&filename)
-	data,_ := ioutil.ReadFile(filename)
+	data,err := ioutil.ReadFile(filename)
+	if(err != nil){
+		fmt.Printf("Error reading %s. Error : %v",filename, err)
+		return
+	}
 	//Split into lines
 	lines := strings.Split(string(data),"\n")	
 	nameSlice := make([]nameStruct, 0, len(lines))

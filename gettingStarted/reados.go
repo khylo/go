@@ -21,11 +21,42 @@ Your program will successively read each line of the text file and create a stru
 
  import (
 	"fmt"
+	"os"
+	"strings"
  )
+
+ type nameStruct struct{
+	 fname string
+	 lname string
+ }
 
 func main(){
 	var filename string
 	fmt.Println("Enter name of file")
 	fmt.Scan(&filename)
+	barr := make([]byte, 1024)
+	fd,err := os.Open(filename)
+	for {
+		data, err := fd.Read(barr)
+
+	}
+	if(err != nil){
+		fmt.Printf("Error opening %s. Error : %v",filename, err)
+		return
+	}
+	//Split into lines
+	lines := strings.Split(string(data),"\n")	
+	nameSlice := make([]nameStruct, 0, len(lines))
+	for _,line := range lines{
+		names := strings.Split(line, " ")
+		nameInst := nameStruct{fname: names[0], lname: names[1]}
+		nameSlice = append(nameSlice, nameInst)
+		//nameSlice.append(nameStruct{fname: names[0], lname: names[1]})
+	}
+	fmt.Printf("Read %d names into Slice of Structs\n",len(nameSlice))
+	for _,name := range nameSlice{
+		fmt.Printf("FirstName: %s  LastName: %s\n",name.fname, name.lname)
+	}
+
 	
 }
