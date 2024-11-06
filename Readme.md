@@ -62,3 +62,24 @@ infoLogger := Logger("INFO")
 errorLogger("Something went wrong!")
 infoLogger("Process completed successfully.")
 ```
+
+### Receiving Type
+Implicit method Arguement... The obj is the arguement. passed by Val (maybe slow)
+unless we use pointer receiver. no need to derefence.. compiler does it automatically\
+
+rec all or none use pointer receivers..
+ (mi *SmiInt )
+```
+type MyInt int
+
+// Here we are adding a receiving type to our MyIn class. Note the (mi MyInt)  which differs from normal function naming.tells what class we are adding to      
+// Double is the name of the function we are using on MyInt
+func (mi MyInt) Double () int {
+
+...
+{
+    v := MyInt(3)
+    v.Double()
+}
+}
+```

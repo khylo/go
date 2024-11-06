@@ -12,7 +12,7 @@ assume the following formula for
 displacement s as a function of time t, acceleration a, initial velocity vo,
 and initial displacement so.
 
-s = ½ a t2 + vot + so
+s = ½ a * t^2 + vo*t + so
 
 Write a program which first prompts the user
 to enter values for acceleration, initial velocity, and initial displacement.
@@ -51,29 +51,40 @@ Submit your Go program source code.
 
 */
 
-func GenDisplaceFn(a, vo, so float64) func(float64) float64 {
+func GenDisplaceFn(a, v0, s0 float64) func(float64) float64 {
 	return func(t float64) float64 {
-		return 0.5*a*t*t + vo*t + so
+		return 0.5*a*t*t + v0*t + s0
 	}
 }
 
+func ParseFloat(s string) float64{
+	ret,err := strconv.ParseFloat( strings.TrimSpace(s),64)
+	if err!=nil{
+		fmt.Printf("Cannot parse input parameter [%v] into a float: Error: %v\n",s, err)
+		os.Exit(1)
+	}
+	return ret
+}
+
 func main() {
+	fmt.Println("Please enter values (space seperated) for Acceleration, Initial Velocity, Initial Displacement")
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	input := scanner.Text()
-	words := strings.Split(input, " ")
-	n, _ := strconv.Atoi(words[0])
-	m, _ := strconv.Atoi(words[1])
-	var a, b, c int
-	for i := 0; i < n; i++ {
+	inputArray := strings.Split(strings.TrimSpace(input), " ")
+	a := ParseFloat(inputArray[0])
+	v0 := ParseFloat(inputArray[1])
+	s0 := ParseFloat(inputArray[2])
+	fun := GenDisplaceFn(a,v0,s0)
+	for {
+		fmt.Println("Please enter a time in seconds (-1 to finish)")
 		scanner.Scan()
 		input = scanner.Text()
-		words = strings.Split(input, " ")
-		a, _ = strconv.Atoi(words[0])
-		b, _ = strconv.Atoi(words[1])
-		c, _ = strconv.Atoi(words[2])
-		if a+b+c >= 2 {
-			fmt.Println(i + 1)
+		t := ParseFloat(input)
+		if(t!=-1){
+			fmt.Printf("You will have travelled %v units after %v seconds\n",fun(t),t)
+		} else {
+			break;
 		}
 	}
 }
