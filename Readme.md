@@ -83,3 +83,59 @@ func (mi MyInt) Double () int {
 }
 }
 ```
+
+# Interfaces
+Concrete types
+
+ 
+
+ 
+
+Interface types..
+
+M/t interface is every class= 
+interface{}
+Just methods
+
+ instance of = s.(Triangle) 
+ bawsically obj.Subclass name in bracket    
+
+Dynamic Type
+
+              Several types may adhere to this interface
+
+              Dynamic type represents the concrete type that matches
+
+Dynamic Value
+
+              The value of the interface instance.. Normally the concrete instance
+
+ 
+
+However can have interface with Nil Dynamic value.
+
+Eg.
+```
+type Speaker interface{
+    Speak() string
+}
+
+type Dog struc{
+    name string
+}
+ 
+func (d Dog) Speak() string{
+    if d==nil {
+        return "Woof"
+    }
+return d.name+” woofs”
+}
+func main() {
+    var d1 Dog
+    var s1 Speaker // Initially this has a Nil dynamic type
+    s1=d1
+    // Dynamic nil value using pointer.. No concrete value in here
+    var d2 *Dog
+    s1 = d2
+}
+ ```
