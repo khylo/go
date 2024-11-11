@@ -97,7 +97,8 @@ M/t interface is every class=
 interface{}
 Just methods
 
- instance of = s.(Triangle) 
+ instance of 
+   tri,ok = s.(Triangle) 
  bawsically obj.Subclass name in bracket    
 
 Dynamic Type
@@ -139,3 +140,24 @@ func main() {
     s1 = d2
 }
  ```
+
+ ### Moores Law
+ Moore's Law states that transistor density will double approximately every two years. As stated in the lectures, it's more of an observation than a strict physical law. Essentially, it meant that as technology advanced, transistors became smaller, allowing more of them to be packed into the same area of silicon. This reduced the distances signals had to travel, which, according to the Von Neumann bottleneck, could decrease lookup time. Additionally, improved technology enabled higher clock frequencies, leading to more operations per second.
+
+However, in recent years, we've reached the limits of Moore's Law. 
+As the transistor density increases, it also increases the power usage. As the power increases, it mens the temperature of the chip also  increases, up to the current stage where we approach temperatures where hardware can melt, and as a result cooling the chip is an increasingly important process.
+
+In order to mitugate this manufacturers have tried to reduce the power .  
+The dynamic power equation, P = αCV²f, shows that the power generated is influenced by items such as clock frequency, and voltage squared. 
+This has led to changes such as clock speeds not increasesing much recently, as developers strive to minimize heat. 
+
+Chip manufacturers have also scale voltage down (Dennard scaling), as transistor size increases. But we're nearing limits where further voltage reductions are not possible. This is because of residual noise levels. If we reduce the voltage anymore, the residual noise will be the same as the voltage level. This coupled with the fact that voltage scaling does not prevent leakage power loss, means that we must stay above a threshold voltage in order to stop errors occurring. Because of this we can no longer rely on Denard scaling for future improvements.
+
+Moreover, transistor density is approaching atomic size, a fundamental physical constraint.
+
+As a result, the original Moore's Law observation is no longer as relevant. To continue innovation, chip manufacturers are now increasing chip size and the number of cores, rather than solely relying on miniaturization.
+Suggestions: from gemini
+
+Clarity: Consider rephrasing the sentence about the Von Neumann bottleneck to make it more concise and easier to understand.
+Conciseness: You could combine some sentences to improve the flow of the text.
+Accuracy: While the dynamic power equation is a good approximation, it's worth noting that it's a simplified model and doesn't capture all the nuances of power dissipation in modern chips.  
