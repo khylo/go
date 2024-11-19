@@ -1,14 +1,3 @@
-/*
-Write a program to sort an array of integers. The program should partition the 
-array into 4 parts, each of which is sorted by a different goroutine. 
-Each partition should be of approximately equal size. Then the main goroutine 
-should merge the 4 sorted subarrays into one large sorted array. 
-
-The program should prompt the user to input a series of integers. Each goroutine 
-which sorts ¼ of the array should print the subarray that it will sort. When 
-sorting is complete, the main goroutine should print the entire sorted list.
-
-*/
 package main
 
 import (
@@ -18,26 +7,68 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 func main() {
+	intArr := GetNumbers()
+	intArr = SortData(intArr)
+	fmt.Printf("Results %v\n", intArr)
 }
-/*
-	var input string
-	fmt.Println("Enter a series of integers separated by spaces:")
-	scanner := bufio.NewScanner(os.Stdin)
-	if scanner.Scan() {
-		input = scanner.Text()
+
+func GetNumbers() []int {
+	fmt.Println("Enter numbers to sort.")
+	reader := bufio.NewReader(os.Stdin)
+	input, err := reader.ReadString('\n')
+
+	handleError(err)
+	fmt.Printf("Read data: %v\n", input)
+	strArr := strings.Split(strings.TrimSpace(input), " ")
+	fmt.Printf("Split into %v\n", strArr)
+	intArr := make([]int, 0, len(strArr))
+	fmt.Printf("Making intSlice: %v\n", len(strArr))
+	for _, num := range strArr {
+		n, err := strconv.Atoi(strings.TrimSpace(num))
+		handleError(err)
+		intArr = append(intArr, n)
 	}
-	inputSlice := strings.Split(input, " ")
-	var intSlice []int
-	for _, i := range inputSlice {
-		j, err := strconv.Atoi(i)
-		if err != nil {
-			panic(err)
+	return intArr
+}
+
+func SortData(intArr []int) []int {
+	var wg sync.WaitGroup
+	rng := len(intArr)/4
+	if len(intArr)%4 !=0
+	    rng++
+	var arrayOfSlices [4][]int
+	for i := 0; i < 4; i++ {
+		top := (i + 1) * rng
+		if top >= len(intArr) {
+			top = len(intArr)
 		}
-		intSlice = append(intSlice, j)
+		fmt.Printf("Slice iteration %d from %d to %d\n", i, (i * rng), top)
+		arrayOfSlices[i] = intArr[i*rng : top]
+		wg.Add(1)
+		go sortData(arrayOfSlices[i], &wg)
 	}
-	sort.Ints(intSlice)
-	fmt.Println(intSlice)
-}*/
+	wg.Wait()
+	ret := make([]int, 0, len(intArr))
+	for i := 0; i < 4; i++ {
+		ret = append(ret, arrayOfSlices[i]...)
+	}
+	sort.Ints(ret)
+	return ret
+}
+
+func sortData(intArr []int, wg *sync.WaitGroup) {
+	fmt.Printf("  goroutine sorting %v\n", intArr)
+	sort.Ints(intArr)
+	wg.Done()
+}
+
+func handleError(err interface{}) {
+	if err != nil {
+		fmt.Printf("Problem reading data: \n", err)
+		os.Exit(1)
+	}
+}

@@ -161,3 +161,52 @@ Suggestions: from gemini
 Clarity: Consider rephrasing the sentence about the Von Neumann bottleneck to make it more concise and easier to understand.
 Conciseness: You could combine some sentences to improve the flow of the text.
 Accuracy: While the dynamic power equation is a good approximation, it's worth noting that it's a simplified model and doesn't capture all the nuances of power dissipation in modern chips.  
+
+## Channels
+
+Can wait on read and write to channel at same time with select.
+e.g this will wait for either inChan to have something to read from or for outChan to have space to write to.
+CAn also have an abort channel, and exit if anything received on it
+```
+select {
+    case a = <- inChannel:
+
+    case outChan <- b
+
+    case <- abort:
+        return
+    default:
+        fmt.Println("Dont wait, if any of above blocked then run this")
+}
+```
+
+### Initialization
+use sync.once.Do(function)
+
+func 'function' is executed ONLY once even if it is called in multiple goroutines
+All calls to once.Do, block untilfirst returns
+Do it before goroutines are started
+```
+var wg sync.WaitGroup
+var once sync.Once
+func setup(){
+    //DO setup stuff
+}
+func doStuff(){
+    //Do main stuff
+    wg.Done()
+}
+func main(){
+    once.Do(setup)
+    wg.Add(2)
+    go doStuff()
+    go doStuff()
+    wg.Wait()
+}
+```
+
+Note that go can detect deadlock if all goroutinges get bocked. But if only a subset get blocked it can't detect
+
+for example of mutex and channels see dp.gp
+
+*dp.go is the wokring dining philosphers problem*
